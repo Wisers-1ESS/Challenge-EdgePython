@@ -1,6 +1,37 @@
 # SPRINTS - TECH MAHINDRA (Python e Edge)
 
-### Sobre o projeto
+## Sobre o projeto
+Você já imaginou ter um hub completo de informações sobre a Fórmula E em português? Esse projeto foi criado exatamente para isso! Combinando o poder do Arduino e Python, nosso objetivo é popularizar a Fórmula E no Brasil, fornecendo um ponto centralizado para todas as informações que você precisa sobre essa emocionante categoria de corrida.
+
+### Funcionalidades do Projeto
+
+- **Informações em Tempo Real**: Monitore a temperatura, velocidade e nível da bateria de um veículo em tempo real usando sensores integrados ao Arduino.
+- **Próximos Eventos**: Fique por dentro dos próximos eventos da Fórmula E com detalhes sobre datas, locais e horários.
+- **Equipes e Pilotos**: Acesse informações detalhadas sobre as equipes e pilotos, incluindo probabilidades de vitória e estatísticas.
+- **Consumo de Energia**: Visualize dados sobre o consumo de energia dos veículos, ajudando a entender melhor a eficiência dos carros elétricos.
+
+### Tecnologias Utilizadas
+
+- **Arduino**: Coleta de dados de sensores de temperatura, corrente e velocidade.
+- **Python**: Processamento e exibição das informações coletadas, integração com APIs para obter dados adicionais sobre a Fórmula E.
+- **Colorama**: Melhora a exibição das informações no terminal, tornando os dados mais acessíveis e visualmente agradáveis.
+
+### Objetivo do Projeto
+
+Popularizar a Fórmula E no Brasil, tornando as informações sobre essa categoria de corrida mais acessíveis para o público em geral. Através deste projeto, esperamos aumentar o interesse e o conhecimento sobre os avanços tecnológicos e a sustentabilidade promovida pela Fórmula E.
+
+### Como Começar
+
+1. Clone este repositório:
+    ```bash
+    git clone https://github.com/seu-usuario/nome-do-repositorio.git
+    ```
+2. Siga as instruções no README para configurar o ambiente e conectar seu Arduino.
+3. Execute o código e comece a explorar as funcionalidades!
+
+---
+
+Sinta-se à vontade para ajustar esta descrição conforme necessário para se alinhar melhor com a visão e detalhes específicos do seu projeto.
 
 ### Execução do projeto
 
