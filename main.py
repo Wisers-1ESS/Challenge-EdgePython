@@ -1,20 +1,26 @@
 import os
 import requests
 import json
+import time
+import sys
+import msvcrt
+import select
 from dotenv import load_dotenv, dotenv_values
 from datetime import datetime, timezone, timedelta
 from colorama import Fore, Style, Back, init
+import serial  # Importa a biblioteca serial
 
 def main():
     init()
-    load_dotenv() # Carrega as variáveis de ambiente
-    apiKey = os.getenv("API_KEY") # Atribui o valor da variável de ambiente API_KEY à variável apiKey
-    seasonID = most_recent_season_ID(get_seasons(apiKey)) # Chama a função most_recent_season_ID() e armazena o retorno na variável seasonID
+    load_dotenv()  # Carrega as variáveis de ambiente
+    apiKey = os.getenv("API_KEY")  # Atribui o valor da variável de ambiente API_KEY à variável apiKey
+    seasonID = most_recent_season_ID(get_seasons(apiKey))  # Chama a função most_recent_season_ID() e armazena o retorno na variável seasonID
     menu = [
         {"id": 1, "title": "Ver próximo evento da Formula E"},
         {"id": 2, "title": "Ver informações sobre os times da Formula E"},
         {"id": 3, "title": "Ver a probabilidade dos times de ganharem da Formula E"},
-        {"id": 4, "title": "Sair"},
+        {"id": 4, "title": "Ver dados de telemetria do Arduino"},
+        {"id": 5, "title": "Sair"},
     ]
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -23,10 +29,10 @@ def main():
         print("*" * 50)
         print(f"{Fore.YELLOW}Escolha uma opção: {Style.NORMAL}")
         for item in menu:
-            print(f"{item['id']} - {item['title']}") # Imprime o menu
-        option = input("Digite o número da opção desejada: ") # Pede ao usuário para digitar a opção desejada
+            print(f"{item['id']} - {item['title']}")  # Imprime o menu
+        option = input("Digite o número da opção desejada: ")  # Pede ao usuário para digitar a opção desejada
         option = int(option) if option.isdigit() else 0
-        os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela
+        os.system('cls' if os.name == 'nt' else 'clear')  # Limpa a tela
         match option:
             case 1:
                 closestEvent = closest_event(seasonID, apiKey)
@@ -39,27 +45,66 @@ def main():
                 for i, team in enumerate(get_teams_win_probabilities(seasonID, apiKey)):
                     print(f"{i+1}. {team['name']} - {team['probability']}%\n{'-'*50}")
             case 4:
+                read_telemetry_data()
+            case 5:
                 break
             case _:
                 print(Fore.RED + Style.BRIGHT + "Opção inválida")
         print(Fore.RED + "Digite qualquer tecla para voltar ao menu")
         input()
-        os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela
+        os.system('cls' if os.name == 'nt' else 'clear')  # Limpa a tela
 
-def get_seasons(apiKey): # Retorna um objeto com todas as temporadas
+def format_and_display_data(data):
     try:
-        url = f"https://api.sportradar.com/formulae/trial/v2/pt/seasons.json?api_key={apiKey}" # Define a URL da API
-        headers = {"accept": "application/json"} # Define o cabeçalho da requisição
-        response = requests.get(url, headers=headers) # Faz a requisição GET
-        response.raise_for_status() # Levanta exceção para status de erro HTTP
-        data = response.json() # Converte o JSON para um objeto
+        # Supondo que os dados são enviados no formato 'Temperatura: XX.X°C\nUso da bateria: X.XXKW'
+        lines = data.split('\n')
+        for line in lines:
+            if 'Temperatura' in line:
+                print(Fore.CYAN + line.strip() + Style.RESET_ALL)
+            elif 'Uso da bateria' in line:
+                print(Fore.YELLOW + line.strip() + Style.RESET_ALL)
+    except Exception as e:
+        print(Fore.RED + "Erro ao formatar os dados: " + str(e) + Style.RESET_ALL)
+
+def read_telemetry_data():
+    ser = serial.Serial('COM5', 9600, timeout=1)  # Substitua 'COM5' pela porta correta do seu Arduino
+    print(Fore.GREEN + Style.BRIGHT + "Dados de Telemetria do Arduino (Digite 'q' para sair):\n" + Style.RESET_ALL)
+    time.sleep(2)  # Aguarda a inicialização da porta serial
+
+    try:
+        while True:
+            # Verifica se há dados disponíveis na porta serial
+            if ser.in_waiting > 0:
+                data = ser.readline().decode('utf-8').strip()
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(Fore.GREEN + Style.BRIGHT + "Dados de Telemetria do Arduino (Digite 'q' para sair):\n" + Style.RESET_ALL)
+                format_and_display_data(data)
+
+            # Verifica se há entrada do usuário
+            if msvcrt.kbhit():
+                user_input = msvcrt.getch().decode('utf-8')
+                if user_input == 'q':  # Digite 'q' para sair
+                    break
+    except KeyboardInterrupt:
+        pass
+    finally:
+        ser.close()
+        print(Fore.RED + "Porta serial fechada." + Style.RESET_ALL)
+
+def get_seasons(apiKey):  # Retorna um objeto com todas as temporadas
+    try:
+        url = f"https://api.sportradar.com/formulae/trial/v2/pt/seasons.json?api_key={apiKey}"  # Define a URL da API
+        headers = {"accept": "application/json"}  # Define o cabeçalho da requisição
+        response = requests.get(url, headers=headers)  # Faz a requisição GET
+        response.raise_for_status()  # Levanta exceção para status de erro HTTP
+        data = response.json()  # Converte o JSON para um objeto
     except requests.exceptions.RequestException as e:
         print(Fore.RED + "Erro na requisição da API")
         print(e)
         exit()
-    return data # Retorna o objeto com as temporadas
+    return data  # Retorna o objeto com as temporadas
 
-def get_events(seasonID, apiKey): # Retorna um objeto com todos os eventos de uma temporada
+def get_events(seasonID, apiKey):  # Retorna um objeto com todos os eventos de uma temporada
     try:
         url = f"https://api.sportradar.com/formulae/trial/v2/pt/sport_events/{seasonID}/schedule.json?api_key={apiKey}"
         headers = {"accept": "application/json"}
@@ -70,10 +115,10 @@ def get_events(seasonID, apiKey): # Retorna um objeto com todos os eventos de um
         print(Fore.RED + "Erro na requisição da API")
         print(e)
         exit()
-    return data # Retorna o objeto com os eventos
+    return data  # Retorna o objeto com os eventos
 
 def closest_event(seasonID, apiKey):
-    events = get_events(seasonID, apiKey) # Chama a função get_events() e armazena o retorno na variável events
+    events = get_events(seasonID, apiKey)  # Chama a função get_events() e armazena o retorno na variável events
     timezone_br = timezone(timedelta(hours=-3))
     # Converte a data de string para datetime e ajusta o fuso horário para o horário de Brasília
     try:
@@ -85,25 +130,25 @@ def closest_event(seasonID, apiKey):
         print("Reinicie o programa e tente novamente")
         exit()
 
-    events_sorted = sorted(events['stages'], key=lambda x: x["scheduled"]) # Ordena os eventos da data mais próxima para a mais distante
-    now = datetime.now(timezone_br) # Pega a data e hora atual
+    events_sorted = sorted(events['stages'], key=lambda x: x["scheduled"])  # Ordena os eventos da data mais próxima para a mais distante
+    now = datetime.now(timezone_br)  # Pega a data e hora atual
     # Encontra a data mais próxima de acontecer
     closest_event = min(events_sorted, key=lambda x: (x["scheduled"] - now).total_seconds() if x["scheduled"] > now else float('inf'))
     # Retorna o evento mais próximo de acontecer
     return closest_event
 
-def most_recent_season_ID(seasons): # Retorna o ID da temporada mais recente
-    return seasons["stages"][0]["id"] # Retorna o ID da temporada mais recente
+def most_recent_season_ID(seasons):  # Retorna o ID da temporada mais recente
+    return seasons["stages"][0]["id"]  # Retorna o ID da temporada mais recente
 
-def get_teams(seasonID, apiKey): # Retorna um objeto com as equipes
+def get_teams(seasonID, apiKey):  # Retorna um objeto com as equipes
     teams = get_teams_win_probabilities(seasonID, apiKey)
     print(f"{Style.BRIGHT+Fore.GREEN}Selecione a equipe para ver mais informações:")
     for i, team in enumerate(teams):
-        print(f"{Back.YELLOW+Fore.MAGENTA}{i+1}. {team['team']['name']}{Back.RESET}") # Imprime o nome das equipes
-    teamID = input(f"{Style.RESET_ALL+Fore.LIGHTWHITE_EX}Digite o número da equipe desejada: ") # Pede ao usuário para digitar o número da equipe desejada
+        print(f"{Back.YELLOW+Fore.MAGENTA}{i+1}. {team['team']['name']}{Back.RESET}")  # Imprime o nome das equipes
+    teamID = input(f"{Style.RESET_ALL+Fore.LIGHTWHITE_EX}Digite o número da equipe desejada: ")  # Pede ao usuário para digitar o número da equipe desejada
     teamID = int(teamID) if teamID.isdigit() else 0
     if teamID < 1 or teamID > len(teams): return print(Fore.RED + "Equipe inválida")
-    os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela
+    os.system('cls' if os.name == 'nt' else 'clear')  # Limpa a tela
     print(f"{Fore.GREEN}Informações sobre a equipe {teams[teamID-1]['team']['name']}:\n")
     try:
         url = f"https://api.sportradar.com/formulae/trial/v2/pt/teams/{teams[teamID-1]['team']['id']}/profile.json?api_key={apiKey}"
@@ -122,7 +167,7 @@ def get_teams(seasonID, apiKey): # Retorna um objeto com as equipes
     for driver in team['competitors']:
         print(f"{' '.join(reversed(driver['name'].split(', ')))} - {driver['nationality']}")
 
-def get_teams_win_probabilities(seasonID, apiKey): # Retorna um objeto com as probabilidades de vitória das equipes
+def get_teams_win_probabilities(seasonID, apiKey):  # Retorna um objeto com as probabilidades de vitória das equipes
     try:
         url = f"https://api.sportradar.com/formulae/trial/v2/pt/sport_events/{seasonID}/probabilities.json?api_key={apiKey}"
         headers = {"accept": "application/json"}
@@ -134,6 +179,6 @@ def get_teams_win_probabilities(seasonID, apiKey): # Retorna um objeto com as pr
         print(e)
         exit()
     
-    return data['probabilities']['markets'][0]['outcomes'] # Retorna o objeto com as equipes
+    return data['probabilities']['markets'][0]['outcomes']  # Retorna o objeto com as equipes
 
 main()
