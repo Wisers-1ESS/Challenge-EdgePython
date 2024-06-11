@@ -73,13 +73,13 @@ Certifique-se de ter o Python e o pip instalados em seu ambiente antes de execut
 
 2. Abra o **com0com** e configure um par de portas virtuais, por exemplo, COM1 e COM2.
 
-3. Execute o arquivo `simular_arduino.py` em um terminal separado e defina uma das portas virtuais na inicialização do script, por exemplo, COM6:
+3. Execute o arquivo `simular_arduino.py` em um terminal separado e defina uma das portas virtuais na inicialização do script, por exemplo, COM1:
 
    ```
    python simular_arduino.py
    ```
 
-4. Execute o projeto principal em outro terminal e na opção 4, digite o nome da outra porta virtual configurada, por exemplo, COM7:
+4. Execute o projeto principal em outro terminal e na opção 4, digite o nome da outra porta virtual configurada, por exemplo, COM2:
 
    ```
    python main.py
