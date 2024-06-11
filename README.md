@@ -10,7 +10,7 @@ Você já imaginou ter um hub completo de informações sobre a Fórmula E em po
 
 - **Informações em Tempo Real**: Monitore a temperatura, velocidade e o consumo energético de um veículo em tempo real usando sensores integrados ao Arduino.
 - **Próximos Eventos**: Fique por dentro dos próximos eventos da Fórmula E com detalhes sobre datas, locais e horários.
-- **Equipes e Pilotos**: Acesse informações detalhadas sobre as equipes e pilotos, incluindo probabilidades de vitória e estatísticas.
+- **Equipes e Pilotos**: Acesse informações detalhadas sobre as equipes e pilotos, incluindo probabilidades de vitória, posição, pontos e muito mais.
 
 
 ### Tecnologias Utilizadas
@@ -22,19 +22,6 @@ Você já imaginou ter um hub completo de informações sobre a Fórmula E em po
 ### Objetivo do Projeto
 
 Popularizar a Fórmula E no Brasil, tornando as informações sobre essa categoria de corrida mais acessíveis para o público em geral. Através deste projeto, esperamos aumentar o interesse e o conhecimento sobre os avanços tecnológicos e a sustentabilidade promovida pela Fórmula E.
-
-### Como Começar
-
-1. Clone este repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
-   ```
-2. Siga as instruções no README para configurar o ambiente e conectar seu Arduino.
-3. Execute o código e comece a explorar as funcionalidades!
-
----
-
-Sinta-se à vontade para ajustar esta descrição conforme necessário para se alinhar melhor com a visão e detalhes específicos do seu projeto.
 
 ### Execução do projeto
 
@@ -80,6 +67,26 @@ Para executar o projeto, siga as etapas abaixo:
 
 Certifique-se de ter o Python e o pip instalados em seu ambiente antes de executar o projeto.
 
+***Adendo***: Para utilizar os dados de telemetria do Arduino de forma simulada, siga as instruções abaixo:
+
+1. Instale um emulador de porta serial, como o **com0com**.
+
+2. Abra o **com0com** e configure um par de portas virtuais, por exemplo, COM1 e COM2.
+
+3. Execute o arquivo `simular_arduino.py` em um terminal separado e defina uma das portas virtuais na inicialização do script, por exemplo, COM6:
+
+   ```
+   python simular_arduino.py
+   ```
+
+4. Execute o projeto principal em outro terminal e na opção 4, digite o nome da outra porta virtual configurada, por exemplo, COM7:
+
+   ```
+   python main.py
+   ```
+
+Dessa forma, você poderá simular a comunicação entre o Arduino e o Python para testar o projeto sem a necessidade de um Arduino físico.
+
 ## Circuito de Sensores - Edge
 
 ### Descrição do Projeto
@@ -89,7 +96,6 @@ O projeto consiste em um circuito de sensores para o carro elétrico da Formula 
 ### Objetivo do Projeto
 
 A ideia é que no futuro cada carro da Fórmula E possa utilizar um circuito semelhante para monitorar o desempenho de seus carros durante as corridas e disponibiliza-los para seus fãs de maneira fácil e intuitiva. Fazendo com que a categoria se torne mais popular e acessível para o público em geral.
-
 
 ### Simulação do Circuito
 
