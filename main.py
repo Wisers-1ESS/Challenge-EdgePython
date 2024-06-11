@@ -14,7 +14,7 @@ def main():
     init()
     load_dotenv()  # Carrega as variáveis de ambiente
     print(f"{Fore.GREEN}Bem-vindo ao programa de telemetria do Arduino!{Style.RESET_ALL}")
-    print(f"{Fore.YELLOW}Carregando informações inciais...{Style.RESET_ALL}")
+    print(f"{Fore.YELLOW}Carregando informações iniciais...{Style.RESET_ALL}")
     apiKey = os.getenv("API_KEY")  # Atribui o valor da variável de ambiente API_KEY à variável apiKey
     seasonID = most_recent_season_ID(get_seasons(apiKey))  # Chama a função most_recent_season_ID() e armazena o retorno na variável seasonID
     time.sleep(1)  # Aguarda 1 segundo
