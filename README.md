@@ -1,5 +1,17 @@
 # SPRINTS - TECH MAHINDRA (Python e Edge)
 
+- [Hub de informações - Python](#hub-de-informações---python)
+  - [Sobre o projeto](#sobre-o-projeto)
+  - [Funcionalidades do Projeto](#funcionalidades-do-projeto)
+  - [Objetivo do Projeto](#objetivo-do-projeto)
+  - [Execução do projeto](#execução-do-projeto)
+- [Circuito de Sensores - Edge](#circuito-de-sensores---edge)
+   - [Sobre o Projeto](#sobre-o-projeto-1)
+   - [Objetivo do Projeto](#objetivo-do-projeto-1)
+   - [Simulação do Circuito](#simulação-do-circuito)
+   - [Lista de componentes](#lista-de-componentes)
+- [Integrantes do grupo](#integrantes-do-grupo)
+
 ## Hub de informações - Python
 
 ### Sobre o projeto
@@ -12,12 +24,6 @@ Você já imaginou ter um hub completo de informações sobre a Fórmula E em po
 - **Próximos Eventos**: Fique por dentro dos próximos eventos da Fórmula E com detalhes sobre datas, locais e horários.
 - **Equipes e Pilotos**: Acesse informações detalhadas sobre as equipes e pilotos, incluindo probabilidades de vitória, posição, pontos e muito mais.
 
-
-### Tecnologias Utilizadas
-
-- **Arduino**: Coleta de dados de sensores de temperatura, corrente e velocidade.
-- **Python**: Processamento e exibição das informações coletadas, integração com APIs para obter dados adicionais sobre a Fórmula E.
-- **Colorama**: Melhora a exibição das informações no terminal, tornando os dados mais acessíveis e visualmente agradáveis.
 
 ### Objetivo do Projeto
 
@@ -89,7 +95,7 @@ Dessa forma, você poderá simular a comunicação entre o Arduino e o Python pa
 
 ## Circuito de Sensores - Edge
 
-### Descrição do Projeto
+### Sobre o Projeto
 
 O projeto consiste em um circuito de sensores para o carro elétrico da Formula E, coletando dados de temperatura, velocidade e consumo de energia. O circuito é composto por um Arduino Uno, um sensor de temperatura, um reed switch magnético e um imã no pneu do carro para cálculo de velocidade. O Arduino coleta os dados dos sensores e envia para o software em Python, que processa e exibe as informações em tempo real.
 
@@ -166,4 +172,8 @@ E aqui a simulação adaptada para o Tinkercad, sem o sensor de velocidade.
 
 ## Integrantes do grupo
 
-Matheus Queiroz - RM558801
+- Matheus Queiroz - RM558801
+- Matheus Vinícius- RM555177
+- Enzo Miletta - RM98677
+- Marcela Torro - RM557658
+- Lucas Son - RM554724
