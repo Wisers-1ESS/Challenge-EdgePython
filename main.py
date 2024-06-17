@@ -1,11 +1,8 @@
 import os
 import requests
-import json
 import time
-import sys
 import msvcrt
-import select
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 from datetime import datetime, timezone, timedelta
 from colorama import Fore, Style, Back, init
 import serial  # Importa a biblioteca serial
