@@ -12,7 +12,6 @@ def main(page: ft.Page):
     page.title = "Hub da Formula E"
     page.window.width = 450
     page.window.height = 700
-    page.window.resizable = False
     page.window.maximizable = False
     page.vertical_alignment = "center"
     page.horizontal_alignment = "center"
@@ -21,14 +20,14 @@ def main(page: ft.Page):
     seasonID = most_recent_season_ID(get_seasons(apiKey))  # Chama a função most_recent_season_ID() e armazena o retorno na variável seasonID
     time.sleep(1)  # Aguarda 1 segundo
     stage_infos = get_stage_infos(seasonID, apiKey)
+    closestEvent = closest_event(stage_infos)
 
-    def show_probability(e):
-        print(Fore.GREEN + Style.BRIGHT + "Probabilidade de vitória das equipes da Formula E:\n" + Style.RESET_ALL + Fore.LIGHTYELLOW_EX)
-        for i, team in enumerate(get_teams_win_probabilities(seasonID, apiKey)):
-            print(f"{i+1}. {team['name']} - {team['probability']}%\n{'-'*50}")
+    def show_probability():
+        teams_win_probabilities = get_teams_win_probabilities(seasonID, apiKey)
+        for i, team in enumerate(teams_win_probabilities):
+            win_probabilities.content.content.controls.append(ft.Text(value=(f"- {team['name']} - {team['probability']}%"), size=18, text_align=ft.TextAlign.LEFT, weight=ft.FontWeight.BOLD, color=ft.colors.PRIMARY))
             
     def show_next_event(e):  # Mostra o evento mais próximo
-        closestEvent = closest_event(stage_infos)
         print(Fore.GREEN + f"{'*'*50}\n\nO evento mais próximo da Formula E ocorrerá em {closestEvent['scheduled'].strftime('%d/%m/%Y %H:%M')}." +
         f"\nO evento acontecerá no {closestEvent['venue']['name']}, em {closestEvent['venue']['city']}, {closestEvent['venue']['country']}\n\n{'*'*50}." + Style.RESET_ALL)
     
@@ -63,18 +62,132 @@ def main(page: ft.Page):
     def clear_stack():
         _stack_main.controls.clear()
         _stack_main.update()
+        
+    def on_page_resize(e):
+        next_event.height = page.window.height - 140
+        teams.height = page.window.height - 140
+        win_probabilities.height = page.window.height - 140
+        telemetry.height = page.window.height - 140
+        page.update()  # Atualiza a página para aplicar as mudanças
+    
+    page.on_resized = on_page_resize
     
     def navHandler(e):
         selected_index = e.control.selected_index
+        page.update()
         if selected_index == 0:
             clear_stack()  # Limpa o conteúdo da página
             _stack_main.controls.append(next_event)
+            page.update()
+            next_event.content = ft.Container(
+                content=ft.Column(
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.START,
+                    controls=[
+                        ft.Text(
+                            value="Próximo Evento da Fórmula E",
+                            size=24,
+                            text_align=ft.TextAlign.CENTER,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.colors.SECONDARY
+                        ),
+                        ft.Divider(height=10, thickness=2),  # Adicionando um divisor
+                        ft.Column(
+                            scroll=ft.ScrollMode.AUTO,
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.START,
+                            controls=[
+                                ft.Text(
+                                    value="Data e Hora:",
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    weight=ft.FontWeight.BOLD,
+                                    color=ft.colors.SECONDARY
+                                ),
+                                ft.Text(
+                                    value=closestEvent['scheduled'].strftime('%d/%m/%Y %H:%M'),
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    color=ft.colors.PRIMARY  # Cor diferente para o valor
+                                ),
+                                ft.Text(
+                                    value="Local:",
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    weight=ft.FontWeight.BOLD,
+                                    color=ft.colors.SECONDARY
+                                ),
+                                ft.Text(
+                                    value=closestEvent['venue']['name'],
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    color=ft.colors.PRIMARY
+                                ),
+                                ft.Text(
+                                    value="Cidade:",
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    weight=ft.FontWeight.BOLD,
+                                    color=ft.colors.SECONDARY
+                                ),
+                                ft.Text(
+                                    value=closestEvent['venue']['city'],
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    color=ft.colors.PRIMARY
+                                ),
+                                ft.Text(
+                                    value="País:",
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    weight=ft.FontWeight.BOLD,
+                                    color=ft.colors.SECONDARY
+                                ),
+                                ft.Text(
+                                    value=closestEvent['venue']['country'],
+                                    size=18,
+                                    text_align=ft.TextAlign.LEFT,
+                                    color=ft.colors.PRIMARY
+                                ),
+                            ]
+                        )
+                    ]
+                ),
+                padding=20,
+                border_radius=15,
+                expand=0.8
+            )
         elif selected_index == 1:
             clear_stack()  # Limpa o conteúdo da página
             _stack_main.controls.append(teams)
         elif selected_index == 2:
             clear_stack()  # Limpa o conteúdo da página
             _stack_main.controls.append(win_probabilities)
+            win_probabilities.content = ft.Container(
+                content=ft.Column(
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.START,
+                    controls=[
+                        ft.Text(
+                            value="Probabilidade de Vitória das Equipes",
+                            size=24,
+                            text_align=ft.TextAlign.CENTER,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.colors.SECONDARY
+                        ),
+                        ft.Divider(height=10, thickness=2),  # Adicionando um divisor
+                        ft.Column(
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.START,
+                            scroll=ft.ScrollMode.AUTO,
+                        )
+                    ]
+                ),
+                padding=20,
+                border_radius=15,
+                expand=0.8
+            )
+            show_probability()
         elif selected_index == 3:
             clear_stack()  # Limpa o conteúdo da página
             _stack_main.controls.append(telemetry)
@@ -92,7 +205,7 @@ def main(page: ft.Page):
     )
         
     next_event = ft.Container(
-        height=550,
+        height = page.window.height - 140,
         border_radius=10,
         bgcolor="#1d2024",
         alignment=ft.alignment.center,
@@ -100,7 +213,7 @@ def main(page: ft.Page):
     )
     
     teams = ft.Container(
-        height=550,
+        height = page.window.height - 140,
         border_radius=10,
         bgcolor="#1d2024",
         alignment=ft.alignment.center,
@@ -108,7 +221,7 @@ def main(page: ft.Page):
     )
     
     win_probabilities = ft.Container(
-        height=550,
+        height = page.window.height - 140,
         border_radius=10,
         bgcolor="#1d2024",
         alignment=ft.alignment.center,
@@ -116,7 +229,7 @@ def main(page: ft.Page):
     )
     
     telemetry = ft.Container(
-        height=550,
+        height = page.window.height - 140,
         border_radius=10,
         bgcolor="#1d2024",
         alignment=ft.alignment.center,
@@ -194,7 +307,6 @@ def get_teams_win_probabilities(seasonID, apiKey):  # Retorna um objeto com as p
         print(Fore.RED + "Erro na requisição da API")
         print(e)
         exit()
-    
     return data['probabilities']['markets'][0]['outcomes']  # Retorna o objeto com as equipes
 
 def closest_event(events):
