@@ -1,4 +1,7 @@
-# SPRINTS - TECH MAHINDRA (Python e Edge)
+# PROJETO LEGADO - Saiba mais em [descontinuação](#descontinuado)
+
+
+## SPRINTS - TECH MAHINDRA (Python e Edge)
 
 - [Hub de informações - Python](#hub-de-informações---python)
   - [Sobre o projeto](#sobre-o-projeto)
@@ -11,25 +14,26 @@
    - [Simulação do Circuito](#simulação-do-circuito)
    - [Lista de componentes](#lista-de-componentes)
 - [Integrantes do grupo](#integrantes-do-grupo)
+- [Projeto descontinuado](#descontinuado)
 
-## Hub de informações - Python
+### Hub de informações - Python
 
-### Sobre o projeto
+#### Sobre o projeto
 
 Você já imaginou ter um hub completo de informações sobre a Fórmula E em português? Esse projeto foi criado exatamente para isso! Combinando o poder do Arduino e Python, nosso objetivo é popularizar a Fórmula E no Brasil, fornecendo um ponto centralizado para todas as informações que você precisa sobre essa emocionante categoria de corrida.
 
-### Funcionalidades do Projeto
+#### Funcionalidades do Projeto
 
 - **Informações em Tempo Real**: Monitore a temperatura, velocidade e o consumo energético de um veículo em tempo real usando sensores integrados ao Arduino.
 - **Próximos Eventos**: Fique por dentro dos próximos eventos da Fórmula E com detalhes sobre datas, locais e horários.
 - **Equipes e Pilotos**: Acesse informações detalhadas sobre as equipes e pilotos, incluindo probabilidades de vitória, posição, pontos e muito mais.
 
 
-### Objetivo do Projeto
+#### Objetivo do Projeto
 
 Popularizar a Fórmula E no Brasil, tornando as informações sobre essa categoria de corrida mais acessíveis para o público em geral. Através deste projeto, esperamos aumentar o interesse e o conhecimento sobre os avanços tecnológicos e a sustentabilidade promovida pela Fórmula E.
 
-### Execução do projeto
+#### Execução do projeto
 
 Para executar o projeto, siga as etapas abaixo:
 
@@ -93,17 +97,17 @@ Certifique-se de ter o Python e o pip instalados em seu ambiente antes de execut
 
 Dessa forma, você poderá simular a comunicação entre o Arduino e o Python para testar o projeto sem a necessidade de um Arduino físico.
 
-## Circuito de Sensores - Edge
+### Circuito de Sensores - Edge
 
-### Sobre o Projeto
+#### Sobre o Projeto
 
 O projeto consiste em um circuito de sensores para o carro elétrico da Formula E, coletando dados de temperatura, velocidade e consumo de energia. O circuito é composto por um Arduino Uno, um sensor de temperatura, um reed switch magnético e um imã no pneu do carro para cálculo de velocidade. O Arduino coleta os dados dos sensores e envia para o software em Python, que processa e exibe as informações em tempo real.
 
-### Objetivo do Projeto
+#### Objetivo do Projeto
 
 A ideia é que no futuro cada carro da Fórmula E possa utilizar um circuito semelhante para monitorar o desempenho de seus carros durante as corridas e disponibiliza-los para seus fãs de maneira fácil e intuitiva. Fazendo com que a categoria se torne mais popular e acessível para o público em geral.
 
-### Simulação do Circuito
+#### Simulação do Circuito
 
 Aqui está a simulação do circuito completo no Fritzing.
 <img src="./edge/Sprint.png" alt="circuito completo no Fritzing">
@@ -113,7 +117,7 @@ E aqui a simulação adaptada para o Tinkercad, sem o sensor de velocidade.
 <img src="./edge/tinkercad.png" alt="circuito adaptado para o tinkercad">
 <a href="https://www.tinkercad.com/things/58NdPJE1c83-sprintedge?sharecode=v_PwgfuQXFmN3SI2Dt3uhuJ3maFtRYsnJ9u47CJ-eGw">Link da simulação no TinkerCad</a>
 
-### Lista de componentes
+#### Lista de componentes
 
 <table>
   <thead>
@@ -170,10 +174,14 @@ E aqui a simulação adaptada para o Tinkercad, sem o sensor de velocidade.
 </table>
 
 
-## Integrantes do grupo
+### Integrantes do grupo
 
 - Matheus Queiroz - RM558801
 - Matheus Vinícius- RM555177
 - Enzo Miletta - RM98677
 - Marcela Torro - RM557658
 - Lucas Son - RM554724
+
+# Descontinuado 
+
+<h3>Esse projeto foi desenvolvido durante a primeira Sprint de Python e Edge da Tech Mahindra, entretanto, após conversas com o grupo foi decidido que o projeto será dividido em duas partes, sendo o de Edge focado mais com a integração para Web e o <a href="https://github.com/Wisers-1ESS/Challenge-Python">Python para um aplicativo desktop e mobile</a>. Dessa forma, o projeto foi descontinuado e os códigos foram separados em dois repositórios diferentes, um para cada Sprint.</h3>
