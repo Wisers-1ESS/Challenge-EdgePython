@@ -184,4 +184,4 @@ E aqui a simulação adaptada para o Tinkercad, sem o sensor de velocidade.
 
 # Descontinuado 
 
-<h3>Esse projeto foi desenvolvido durante a primeira Sprint de Python e Edge da Tech Mahindra, entretanto, após conversas com o grupo foi decidido que o projeto será dividido em duas partes, sendo o de Edge focado mais com a integração para Web e o <a href="https://github.com/Wisers-1ESS/Challenge-Python">Python para um aplicativo desktop e mobile</a>. Dessa forma, o projeto foi descontinuado e os códigos foram separados em dois repositórios diferentes, um para cada Sprint.</h3>
+<h3>Esse projeto foi desenvolvido durante a primeira Sprint de Python e Edge da Tech Mahindra, entretanto, após conversas com o grupo foi decidido que o projeto será dividido em duas partes, sendo o de Edge focado mais com a integração para Web e o <a href="https://github.com/Challenge-Formula-E/Challenge-Python">Python para um aplicativo desktop e mobile</a>. Dessa forma, o projeto foi descontinuado e os códigos foram separados em dois repositórios diferentes, um para cada Sprint.</h3>
